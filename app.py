@@ -33,7 +33,7 @@ SKILLS = [
     'Python', 'SQL', 'Power BI', 'Excel', 'Machine Learning', 'Deep Learning',
     'Cloud Computing', 'Cybersecurity', 'UI/UX Design', 'Product Management',
     'Blockchain', 'Finance', 'Digital Marketing', 'DevOps', 'Communication',
-    'Leadership', 'Problem Solving'
+    'Leadership', 'Problem Solving', 'Visual Design'  # FIX: Added 'Visual Design' to fix KeyError
 ]
 
 # Education Levels for Label Encoding
@@ -95,7 +95,8 @@ def generate_and_train_model():
 
         # Determine Target Career (based on weighted score)
         tech_score = (user_skills['Python'] + user_skills['Machine Learning'] + user_skills['Cloud Computing']) * 10
-        design_score = (user_skills['UI/UX Design'] + user_skills['Graphic Designer']) * 8
+        # FIX: Replaced 'Graphic Designer' (Job Profile) with 'Visual Design' (Skill)
+        design_score = (user_skills['UI/UX Design'] + user_skills['Visual Design']) * 8
         finance_score = (user_skills['Finance'] + user_skills['Excel']) * 7
         comm_score = (user_skills['Communication'] + user_skills['Leadership']) * 5
 
@@ -104,7 +105,8 @@ def generate_and_train_model():
             'Software Developer': tech_score * 0.5 + cgpa * 5 + comm_score * 0.2,
             'Product Manager': comm_score * 0.6 + finance_score * 0.3 + tech_score * 0.1,
             'UI/UX Designer': design_score * 0.7 + comm_score * 0.2,
-            'Financial Analyst': finance_score * 0.7 + comm_score * 0.3
+            'Financial Analyst': finance_score * 0.7 + comm_score * 0.3,
+            'Graphic Designer': design_score * 0.6 + comm_score * 0.1, # Added scoring for consistency
         }
 
         # Select the highest scoring career, with some randomness
@@ -224,6 +226,11 @@ def generate_ai_recommendations(career_role, confidence_score):
                 ("Product School Certifications", "https://productschool.com"),
                 ("Roadmap to Product Management (YouTube)", "https://youtube.com/pm-roadmap")
             ],
+            'Graphic Designer': [ # Added for consistency
+                ("Graphic Design Masterclass (Udemy)", "https://udemy.com/graphic-design-masterclass"),
+                ("Adobe Illustrator Essential Training (LinkedIn Learning)", "https://linkedin.com/illustrator"),
+                ("The Futur - Brand Strategy Fundamentals", "https://youtube.com/thefutur")
+            ],
             # Fallback for others
             'default': [
                 ("General Career Success (Skillshare)", "https://skillshare.com/careers"),
@@ -235,7 +242,8 @@ def generate_ai_recommendations(career_role, confidence_score):
             'Software Developer': ['One Backend Framework (Node/Django)', 'Cloud (AWS/Azure)', 'Version Control (Git)', 'Data Structures & Algorithms'],
             'Product Manager': ['Market Research', 'Agile/Scrum', 'Stakeholder Management', 'Wireframing (Figma)'],
             'UI/UX Designer': ['Figma/Sketch', 'Prototyping', 'User Research', 'Interaction Design'],
-            'Financial Analyst': ['Advanced Excel Modeling', 'Valuation', 'Financial Statement Analysis', 'Python for Finance']
+            'Financial Analyst': ['Advanced Excel Modeling', 'Valuation', 'Financial Statement Analysis', 'Python for Finance'],
+            'Graphic Designer': ['Adobe Creative Suite', 'Branding Fundamentals', 'Typography', 'Visual Design'],
         },
         'career_roadmap': {
             'Data Analyst': [
@@ -787,3 +795,13 @@ def main_app():
         # Show login/signup if not authenticated
         st.sidebar.title("Student Career System")
         login_form()
+        
+    # --- Always visible content ---
+    st.sidebar.markdown("""
+    ---
+    🌐 **Tech Stack:** Python, Streamlit, scikit-learn, Pandas, Plotly.
+    """)
+    
+
+if __name__ == '__main__':
+    main_app()
